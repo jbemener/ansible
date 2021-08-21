@@ -1,0 +1,16 @@
+- name: Create Windows WSUS Server 2019 GUI
+  hosts: "{{ host_group }}"
+  gather_facts: no
+  tasks:
+    - name: Install WSUS Server Role
+      win_feature:
+        name: UpdateServices-Services, UpdateServices-WidDB, -IncludeManagementTools
+        state: present
+    - name: Firewall rules for windows update URL's
+      community.windows.win_firewall_rule:
+        name: WSUS
+        localport: 443
+        action: allow
+        direction: in
+        protocol: tcp
+        
